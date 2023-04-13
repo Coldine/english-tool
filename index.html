@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Presentation</title>
+
+		<!-- <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> -->
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/black.css" id="theme">
+		<script src="js/advb.js"></script>
+		<style>
+			.Coldine {
+				font-size: var(--r-heading2-size);
+				font-weight: bold;
+				
+			}
+
+			.Coldine > div, .sec > div{
+				min-height: 4vh;
+				min-width: 3vw;
+				display: inline-block;
+				padding: .5rem;
+				/* margin: var(--r-block-margin); */
+			}
+			.sec > div{
+				text-transform: lowercase;
+				font-size: .8em;
+			}
+			#verb2.active, #adjective2.active {
+				color: var(--inv-2);
+			}
+
+			.Coldine > div{
+				text-transform: uppercase;
+
+			}
+			.ass{
+				color: var(--inv);
+				/* font-weight: bold; */
+			}
+			#verb.active, #adjective.active {
+				/* font-weight: bold; */
+				color: var(--inv-2);
+			}
+			#help.none{
+				display: none;
+			}
+
+			
+		</style>
+		<!-- Theme used for syntax highlighting of code -->
+	</head>
+	
+	<body>
+		
+		<div class="reveal">
+			
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+			
+				<section>
+					
+					<div class="r-hstack justify-center Coldine">
+						<div id="verb">[Verb]</div>		
+						<div>+</div>		
+						<div class="ass">as</div>		
+						<div>+</div>		
+						<div id="adjective">[Adjective]</div>		
+						<div>+</div>		
+						<div class="ass">as</div>	
+								
+					</div>
+					<div class="r-hstack justify-center sec" id="help">
+						<div id="verb2">[verbo]</div>		
+						<div>+</div>		
+						<div class="ass">tan/tanto</div>		
+						<div>+</div>		
+						<div id="adjective2">[adjetivo]</div>		
+						<div>+</div>		
+						<div class="ass">como</div>	
+								
+					</div>
+					<!-- <h2 style="margin-top: 20px; color:#555555">Let'Structure!</h2> -->
+				</section>	
+
+			</div>
+
+		</div>
+		<script>	
+			function genTxt(workOn) {
+				let k = rBtw(0,99);
+				if (workOn == "adjective") return adjetivos[k];
+				return verbos[k];
+			}
+
+			function rBtw(min, max) { return Math.floor(Math.random() * (max - min + 1) + min)}
+
+			function start() {
+				let workOn = (rBtw(0,20) < 10)? "adjective" : "verb"; 
+				let el = document.getElementById(workOn);
+				let el2 = document.getElementById(workOn + "2");
+				el.setAttribute('class',"active");
+				el2.setAttribute('class',"active");
+				let k = rBtw(50,100)
+				let code = window.setInterval((e,e2)=>{
+					let ans = genTxt(workOn);
+					e.innerText = ans[0]; 
+					e2.innerText = ans[1]; 
+				}, 63, el, el2);	
+				window.setTimeout(a=>{window.clearInterval(a)}, 999, code)				
+			}
+
+		</script>
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/zoom/zoom.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/search/search.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+
+			Reveal.initialize({
+				controls: false,
+				progress: false,
+				center: true,
+				hash: false,
+
+				// plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight ]
+				plugins: []
+			});
+			window.addEventListener("keydown", (e) => {
+				if (e.code == "KeyT" && e.shiftKey){	
+					let t = document.getElementById('theme');
+					let tt = t.getAttribute('href').split("/").findLast(e=>true).split(".")[0];
+					let k = (tt == "black") ? "white":"black";
+					t.setAttribute('href',`dist/theme/${k}.css`);
+				}
+
+				if (e.code == "Space") {
+					document.getElementById("adjective").innerText = "[Adjective]";
+					document.getElementById("adjective").removeAttribute("class");
+					document.getElementById("verb").innerText = "[Verb]";
+					document.getElementById("verb").removeAttribute("class");
+
+
+					document.getElementById("adjective2").innerText = "[adjetivo]";
+					document.getElementById("adjective2").removeAttribute("class");
+					document.getElementById("verb2").innerText = "[verbo]";
+					document.getElementById("verb2").removeAttribute("class");
+
+					start()};
+
+				if (e.code == "KeyH"){
+					document.getElementById("help").classList.toggle("none");
+				}
+			});
+
+			document.getElementById('theme').setAttribute('href','dist/theme/white.css')
+
+					
+		</script>
+
+	</body>
+</html>
